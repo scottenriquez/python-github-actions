@@ -4,38 +4,45 @@ jobs:
   ci-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone the repository
+      - name: clone the repository
         uses: actions/checkout@v3
-      - name: Set up Python
+      - name: install Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
-      - name: Set up Ruby
+      - name: install Ruby 
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-      - name: Install cfn_nag
+      - name: install cfn_nag
         run: |
           gem install cfn-nag
       - name: cfn_nag 
         run: |
           cfn_nag_scan --input-path template.yaml
-      - name: Install cfn-lint
+      - name: install cfn-lint
         run: |
           pip install cfn-lint
       - name: cfn-lint 
         run: |
           cfn-lint template.yaml
-      - name: Install Bandit
+      - name: install bandit
         run: |
           pip install bandit
-      - name: Bandit check
+      - name: bandit checks
         run: |
           bandit -r rss_webhook.py --confidence-level high
-      - name: Install dependencies
+      - name: update homebrew and install git-secrets
+        run: |
+          brew upgrade
+          brew install git-secrets
+      - name: git-secrets
+        run: |
+          git secrets --scan
+      - name: install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run unit tests
+      - name: unit tests
         run: |
-          pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          pytest
