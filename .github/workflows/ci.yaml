@@ -31,7 +31,7 @@ jobs:
           pip install bandit
       - name: bandit checks
         run: |
-          bandit -r rss_webhook.py --confidence-level high
+          bandit -r . --confidence-level high
       - name: install homebrew and git-secrets
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -41,6 +41,7 @@ jobs:
           brew --version
           brew upgrade
           brew install git-secrets
+          sudo cp /home/linuxbrew/.linuxbrew/bin/git-secrets /usr/bin/
       - name: git-secrets
         run: |
           git secrets --scan
