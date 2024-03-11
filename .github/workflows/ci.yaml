@@ -32,8 +32,9 @@ jobs:
       - name: bandit checks
         run: |
           bandit -r rss_webhook.py --confidence-level high
-      - name: update homebrew and install git-secrets
+      - name: install homebrew and git-secrets
         run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew upgrade
           brew install git-secrets
       - name: git-secrets
